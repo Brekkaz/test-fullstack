@@ -309,9 +309,4 @@ mod tests {
     async fn test_should_fail_when_importing_csv_file_with_inexistent_columns() {
         //Todo
     }
-
-    #[actix_rt::test]
-    async fn test_should_fail_when_importing_csv_file_with_wrong_or_inexistent_columns() {
-        //Todo
-    }
 }

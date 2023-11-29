@@ -59,11 +59,6 @@ mod tests {
     }
 
     #[actix_rt::test]
-    async fn test_should_delete_with_404_error_if_battle_does_not_exists() {
-       //Todo
-    }
-
-    #[actix_rt::test]
     async fn test_should_create_a_battle_with_404_error_if_one_parameter_has_a_monster_id_does_not_exists() {
         //Todo
     }
@@ -79,23 +74,9 @@ mod tests {
     }
 
     #[actix_rt::test]
-    async fn test_should_create_battle_correctly_with_monster_b_winning() {
-        //Todo
-    }
-
-    #[actix_rt::test]
-    async fn test_should_create_battle_correctly_with_monster_a_winning_if_theirs_speeds_same_and_monster_a_has_higher_attack() {
-        //Todo
-    }
-
-    #[actix_rt::test]
     async fn test_should_create_battle_correctly_with_monster_b_winning_if_theirs_speeds_same_and_monster_b_has_higher_attack() {
         //Todo
     }
 
-    #[actix_rt::test]
-    async fn test_should_create_battle_correctly_with_monster_a_winning_if_theirs_defense_same_and_monster_a_has_higher_speed() {
-        //Todo
-    }
 }
 
