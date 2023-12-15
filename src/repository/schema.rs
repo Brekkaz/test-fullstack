@@ -15,6 +15,7 @@ diesel::table! {
     monsters (id) {
         id -> Varchar,
         image_url -> Varchar,
+        name -> Varchar,
         attack -> Int4,
         defense -> Int4,
         hp -> Int4,
@@ -26,7 +27,4 @@ diesel::table! {
 
 diesel::joinable!(battles -> monsters (winner));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    battles,
-    monsters,
-);
+diesel::allow_tables_to_appear_in_same_query!(battles, monsters,);

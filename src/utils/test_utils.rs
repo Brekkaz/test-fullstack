@@ -1,11 +1,11 @@
-use diesel::prelude::*;
-use chrono::prelude::*;
-use crate::repository::database::Database;
-use crate::models::monster::Monster;
-use crate::models::battle::Battle;
-use crate::repository::schema::monsters::dsl::monsters;
-use crate::repository::schema::battles::dsl::battles;
-use diesel::associations::HasTable;
+use crate::models::{battle::Battle, monster::Monster};
+use crate::repository::{
+    database::Database,
+    schema::{battles::dsl::battles, monsters::dsl::monsters},
+};
+use actix_web::http::header::{HeaderName, HeaderValue, CONTENT_TYPE};
+use chrono::Utc;
+use diesel::{associations::HasTable, RunQueryDsl};
 
 #[allow(dead_code)]
 pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
@@ -21,7 +21,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 50,
             speed: 80,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
+            updated_at: Some(current_time),
         },
         Monster {
             id: uuid::Uuid::new_v4().to_string(),
@@ -32,7 +32,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 40,
             speed: 40,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
+            updated_at: Some(current_time),
         },
         Monster {
             id: uuid::Uuid::new_v4().to_string(),
@@ -43,7 +43,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 50,
             speed: 80,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
+            updated_at: Some(current_time),
         },
         Monster {
             id: uuid::Uuid::new_v4().to_string(),
@@ -54,7 +54,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 50,
             speed: 40,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
+            updated_at: Some(current_time),
         },
         Monster {
             id: uuid::Uuid::new_v4().to_string(),
@@ -65,7 +65,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 100,
             speed: 40,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
+            updated_at: Some(current_time),
         },
         Monster {
             id: uuid::Uuid::new_v4().to_string(),
@@ -76,7 +76,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 100,
             speed: 80,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
+            updated_at: Some(current_time),
         },
         Monster {
             id: uuid::Uuid::new_v4().to_string(),
@@ -87,8 +87,8 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
             hp: 150,
             speed: 40,
             created_at: Some(current_time),
-            updated_at: Some(current_time)
-        }
+            updated_at: Some(current_time),
+        },
     ];
 
     let mut test_monsters = vec![];
@@ -112,7 +112,7 @@ pub async fn init_test_monsters(db: &Database) -> Vec<Monster> {
 }
 
 #[allow(dead_code)]
-pub async fn init_test_battle(db: &Database) -> Battle {
+pub async fn init_test_battle(db: &Database) -> Vec<Battle> {
     let test_monsters = init_test_monsters(db).await;
     let mut connection = db.get_connection();
     let current_time = Utc::now().naive_utc();
@@ -129,10 +129,31 @@ pub async fn init_test_battle(db: &Database) -> Battle {
         .values(&battle_data)
         .get_result(&mut connection)
     {
-        Ok(battle) => battle,
+        Ok(battle) => vec![battle],
         Err(err) => {
             eprintln!("Error inserting battle: {:?}", err);
             panic!("Failed to insert battle");
         }
     }
+}
+
+#[allow(dead_code)]
+pub fn build_multipart_payload_and_header(
+    file_name: &str,
+    file_contents: &str,
+) -> (String, (HeaderName, HeaderValue)) {
+    let boundary = "-----------------------------202022185716362916172375148227";
+    let payload = format!(
+        "{boundary}\r\n\
+Content-Disposition: form-data; name=\"file\"; filename=\"{file_name}\"\r\n\
+Content-Type: text/csv\r\n\
+\r\n\r\n\
+{file_contents}\r\n\r\n\
+{boundary}--"
+    );
+    let header = (
+        CONTENT_TYPE,
+        HeaderValue::from_static("multipart/form-data; boundary=---------------------------202022185716362916172375148227"),
+    );
+    (payload, header)
 }

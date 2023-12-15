@@ -1,4 +1,4 @@
-name,attack,defense,hp,speed,imageUrl
+name,attack,defense,hp,speed,image_url
 insect rabbit,82,45,66,42,https://loremflickr.com/640/480
 cat cetacean,41,94,78,59,https://loremflickr.com/640/480
 bear dog,38,60,41,47,https://loremflickr.com/640/480

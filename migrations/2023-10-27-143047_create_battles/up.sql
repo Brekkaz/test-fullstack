@@ -8,3 +8,5 @@ CREATE TABLE battles (
     updated_at TIMESTAMP,
     FOREIGN KEY (winner) REFERENCES monsters(id) ON DELETE CASCADE
 );
+SELECT diesel_manage_created_at('battles');
+SELECT diesel_manage_updated_at('battles');
